@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Configurations>Release;Debug</Configurations>
+    <Platforms>AnyCPU;iPhone</Platforms>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' " />
+  <ItemGroup>
+    <Folder Include="Models\FormQuestions\" />
+    <Folder Include="Models\FormAnswers\" />
+    <Folder Include="Models\DynamicForms\" />
+    <Folder Include="Models\Internal\" />
+    <Folder Include="Models\ObjectExtenders\" />
+    <Folder Include="Models\ObjectExtenders\FormAnswers\" />
+    <Folder Include="Models\ObjectExtenders\FormQuestions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Prism.DryIoc.Forms" Version="7.2.0.1422" />
+    <PackageReference Include="SQLiteNetExtensions.Async" Version="2.1.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Models\ObjectExtenders\FormAnswers\" />
+    <None Remove="Models\ObjectExtenders\FormQuestions\" />
+  </ItemGroup>
+</Project>
