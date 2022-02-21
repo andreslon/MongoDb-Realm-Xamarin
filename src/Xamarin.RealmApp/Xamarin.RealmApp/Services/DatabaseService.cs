@@ -9,72 +9,38 @@ using Xamarin.RealmApp.Models;
 
 namespace Xamarin.RealmApp.Services
 {
-    internal class DatabaseService<T> : IDatabaseService<T> where T : RealmObject, new()
+    public class DatabaseService<T> : IDatabaseService<T> where T : RealmObject, new()
     {
-        private Realm realm;
-
+        public Realm RealmInstance { get; set; }
         public DatabaseService()
         {
-            realm = Realm.GetInstance();
+            RealmInstance = Realm.GetInstance();
         }
-
-
-        public IQueryable<T> GetAll()
-        {
-            return realm.All<T>().AsQueryable();
-        }
-        public T GetFirst(Expression<Func<T, bool>> predicate)
-        {
-            return GetAll().FirstOrDefault(predicate);
-        }
-        public IQueryable<T> FindBy(Expression<Func<T, bool>> predicate)
-        {
-            return GetAll().Where(predicate);
-        }
-        public void Add(T entity)
-        {
-            realm.Write(() => realm.Add(entity));
-        }
+        public IQueryable<T> GetAll() { return RealmInstance.All<T>().AsQueryable(); }
+        public T GetFirst(Expression<Func<T, bool>> predicate) { return GetAll().FirstOrDefault(predicate); }
+        public IQueryable<T> FindBy(Expression<Func<T, bool>> predicate) { return GetAll().Where(predicate); }
+        public void Add(T entity) { RealmInstance.Write(() => RealmInstance.Add(entity)); }
         public void AddRange(List<T> entities)
         {
-            realm.Write(() =>
-            {
-                entities.Select(x => realm.Add(x)).ToList();
-            });
+            RealmInstance.Write(() => { entities.Select(x => RealmInstance.Add(x)).ToList(); });
         }
-        public void Update(T entity)
-        {
-            realm.Write(() => realm.Add(entity, true));
-        }
+        public void Update(T entity) { RealmInstance.Write(() => RealmInstance.Add(entity, true)); }
         public void UpdateRange(List<T> entities)
         {
-            realm.Write(() =>
-            {
-                entities.Select(x => realm.Add(x, true)).ToList();
-            });
+            RealmInstance.Write(() => { entities.Select(x => RealmInstance.Add(x, true)).ToList(); });
         }
-
         public void Delete(T entity)
         {
-            realm.Write(() =>
-            {
-                realm.Remove(entity);
-            });
+            RealmInstance.Write(() => { RealmInstance.Remove(entity); });
         }
-
         public void DeleteRange(List<T> entities)
         {
-            realm.Write(() =>
-            {
-                realm.RemoveRange(entities.AsQueryable());
-            });
+            RealmInstance.Write(() => { RealmInstance.RemoveRange(entities.AsQueryable()); });
         }
-
-
         private void StartObserver()
         {
             // Watch for Guitar collection changes.
-            var token = realm.All<Route>()
+            var token = RealmInstance.All<Route>()
                 .SubscribeForNotifications((sender, changes, error) =>
                 {
                     foreach (var i in changes.DeletedIndices)
