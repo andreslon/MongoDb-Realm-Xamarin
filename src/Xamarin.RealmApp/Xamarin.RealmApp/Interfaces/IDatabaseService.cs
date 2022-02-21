@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Xamarin.RealmApp.Interfaces
 {
-    internal interface IDatabaseService
+    internal interface IDatabaseService<T> where T : class
     {
     }
 }

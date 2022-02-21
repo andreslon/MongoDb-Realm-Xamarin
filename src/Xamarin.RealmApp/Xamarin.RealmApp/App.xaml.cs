@@ -30,7 +30,7 @@ namespace Xamarin.RealmApp
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
 
-            //containerRegistry.Register<IRouteRepository, RouteRepository>();
+            containerRegistry.Register<IRouteRepository, RouteRepository>();
         }
     }
 }
