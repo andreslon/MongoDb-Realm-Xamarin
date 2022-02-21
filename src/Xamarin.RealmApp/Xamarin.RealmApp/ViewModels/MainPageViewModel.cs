@@ -22,7 +22,8 @@ namespace Xamarin.RealmApp.ViewModels
         }
         private void CreateRoute()
         {
-            NewRoute.Name = String.Empty;
+            if (NewRoute!=null)
+                NewRoute.Name = String.Empty;
             NewRoute = new Route();
         }
         private void SaveRoute()

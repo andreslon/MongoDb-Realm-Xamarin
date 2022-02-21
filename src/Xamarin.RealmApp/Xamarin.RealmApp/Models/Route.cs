@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Xamarin.RealmApp.Models
 {
-    public class Route
+    public class Route: RealmObject
     {
         [PrimaryKey]
         public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
