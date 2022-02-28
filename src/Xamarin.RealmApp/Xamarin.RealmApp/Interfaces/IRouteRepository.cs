@@ -5,7 +5,7 @@ using Xamarin.RealmApp.Models;
 
 namespace Xamarin.RealmApp.Interfaces
 {
-    internal interface IRouteRepository: IDatabaseService<Route>
+    public interface IRouteRepository : IDatabaseService<Route>
     {
     }
 }

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Xamarin.RealmApp.Views.MainPage"
              xmlns:prism="http://prismlibrary.com"
+             xmlns:viewModels="clr-namespace:Xamarin.RealmApp.ViewModels;assembly=Xamarin.RealmApp"
              prism:ViewModelLocator.AutowireViewModel="True"
              Title="{Binding Title}">
 
@@ -10,8 +11,12 @@
 
         <StackLayout Grid.Row="0">
             <Label Text="Route" TextColor="#2196F3"></Label>
+            <Label Text="{Binding NewRoute.Id, Mode=TwoWay}" TextColor="Red"></Label>
             <Entry Text="{Binding NewRoute.Name, Mode=TwoWay}"></Entry>
-            <Button  Text="Add" Command="{Binding SaveRouteCommand}"></Button>
+            <Grid ColumnDefinitions="*,*">
+                <Button Grid.Column="0"  Text="Add Or Update" Command="{Binding SaveOrUpdateRouteCommand}"></Button>
+                <Button Grid.Column="1" Text="Clear" Command="{Binding ClearRouteCommand}"></Button>
+            </Grid>
         </StackLayout>
 
         <ScrollView  Grid.Row="1" >
@@ -19,7 +24,11 @@
                 <BindableLayout.ItemTemplate>
                     <DataTemplate>
                         <Frame Margin="2" Padding="10">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewModels:MainPageViewModel}}, Path=EditRouteCommand}" CommandParameter="{Binding}" />
+                            </Frame.GestureRecognizers>
                             <StackLayout>
+                                <Label Text="{Binding Id}"/>
                                 <Label Text="{Binding Name}"/>
                             </StackLayout>
                         </Frame>

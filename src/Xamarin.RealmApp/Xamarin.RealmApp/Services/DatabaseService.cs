@@ -19,13 +19,8 @@ namespace Xamarin.RealmApp.Services
         public IQueryable<T> GetAll() { return RealmInstance.All<T>().AsQueryable(); }
         public T GetFirst(Expression<Func<T, bool>> predicate) { return GetAll().FirstOrDefault(predicate); }
         public IQueryable<T> FindBy(Expression<Func<T, bool>> predicate) { return GetAll().Where(predicate); }
-        public void Add(T entity) { RealmInstance.Write(() => RealmInstance.Add(entity)); }
-        public void AddRange(List<T> entities)
-        {
-            RealmInstance.Write(() => { entities.Select(x => RealmInstance.Add(x)).ToList(); });
-        }
-        public void Update(T entity) { RealmInstance.Write(() => RealmInstance.Add(entity, true)); }
-        public void UpdateRange(List<T> entities)
+        public void AddOrUpdate(T entity) { RealmInstance.Write(() => RealmInstance.Add(entity,true)); }
+        public void AddOrUpdateRange(List<T> entities)
         {
             RealmInstance.Write(() => { entities.Select(x => RealmInstance.Add(x, true)).ToList(); });
         }
