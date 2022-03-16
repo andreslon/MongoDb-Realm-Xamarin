@@ -11,5 +11,6 @@ namespace Xamarin.RealmApp.Models
         [PrimaryKey]
         public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
         public string Name { get; set; }
+        public IList<Site> Sites { get;  }
     }
 }

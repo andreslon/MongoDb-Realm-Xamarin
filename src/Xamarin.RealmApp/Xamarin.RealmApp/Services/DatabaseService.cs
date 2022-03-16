@@ -14,12 +14,41 @@ namespace Xamarin.RealmApp.Services
         public Realm RealmInstance { get; set; }
         public DatabaseService()
         {
-            RealmInstance = Realm.GetInstance();
+
+            var config = new RealmConfiguration
+            {
+                SchemaVersion = 1,
+                MigrationCallback = (migration, oldSchemaVersion) =>
+                {
+                    var oldRoutes = migration.OldRealm.DynamicApi.All("Route");
+                    var newRoutes = migration.NewRealm.All<Route>();
+                    // Migrate Route objects
+                    for (var i = 0; i < newRoutes.Count(); i++)
+                    {
+                        var oldRoute = oldRoutes.ElementAt(i);
+                        var newRoute = newRoutes.ElementAt(i);
+
+                        newRoute.Name  = oldRoute.Name;
+                    }
+                }
+            };
+
+            try
+            {
+                RealmInstance = Realm.GetInstance(config);
+                // Realm successfully opened, with migration applied on background thread
+            }
+            catch (Exception ex)
+            {
+                // Handle exception that occurred while opening the Realm
+            }
+
+
         }
         public IQueryable<T> GetAll() { return RealmInstance.All<T>().AsQueryable(); }
         public T GetFirst(Expression<Func<T, bool>> predicate) { return GetAll().FirstOrDefault(predicate); }
         public IQueryable<T> FindBy(Expression<Func<T, bool>> predicate) { return GetAll().Where(predicate); }
-        public void AddOrUpdate(T entity) { RealmInstance.Write(() => RealmInstance.Add(entity,true)); }
+        public void AddOrUpdate(T entity) { RealmInstance.Write(() => RealmInstance.Add(entity, true)); }
         public void AddOrUpdateRange(List<T> entities)
         {
             RealmInstance.Write(() => { entities.Select(x => RealmInstance.Add(x, true)).ToList(); });

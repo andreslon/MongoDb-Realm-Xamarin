@@ -1,10 +1,15 @@
-﻿using System;
+﻿using MongoDB.Bson;
+using Realms;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace Xamarin.RealmApp.Models
-{
-    internal class Site
+{ 
+    public class Site : RealmObject
     {
+        [PrimaryKey]
+        public ObjectId Id { get; set; } = ObjectId.GenerateNewId();
+        public string Name { get; set; }
     }
 }
